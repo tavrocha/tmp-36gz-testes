@@ -1,2 +1,5 @@
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\IndustrialMonitor.csproj.AssemblyReference.cache
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\IndustrialMonitor_MarkupCompile.cache
+C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\Views\MainWindow.g.cs
+C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\IndustrialMonitor_MarkupCompile.lref

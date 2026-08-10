@@ -11,47 +11,63 @@ namespace IndustrialMonitor.ViewModels
     public class MainViewModel : ViewModelBase
     {
         private readonly SerialService _serialService;
-        private double _temperaturaAtual;
-        private string _statusTexto = "🔴 ESP32 desconectado";
+
+        private double _temperatura;
+        public double Temperatura
+        {
+            get => _temperatura;
+            set
+            {
+                _temperatura = value;
+                OnPropertyChanged(nameof(Temperatura));
+            }
+        }
+
         private bool _isConectado;
-        private PortaInfo? _portaSelecionada;
-
-        public ObservableCollection<PortaInfo> PortasDisponiveis { get; } = new();
-
-        public double TemperaturaAtual
-        {
-            get => _temperaturaAtual;
-            set => SetProperty(ref _temperaturaAtual, value);
-        }
-
-        public string StatusTexto
-        {
-            get => _statusTexto;
-            set => SetProperty(ref _statusTexto, value);
-        }
-
         public bool IsConectado
         {
             get => _isConectado;
             set
             {
-                if (SetProperty(ref _isConectado, value))
-                {
-                    ((RelayCommand)ConectarCommand).RaiseCanExecuteChanged();
-                    ((RelayCommand)DesconectarCommand).RaiseCanExecuteChanged();
-                }
+                _isConectado = value;
+                OnPropertyChanged(nameof(IsConectado));
+                OnPropertyChanged(nameof(StatusConexaoTexto));
+                CommandManager.InvalidateRequerySuggested();
             }
         }
 
+        public string StatusConexaoTexto => IsConectado ? "ESP32 conectado" : "ESP32 desconectado";
+
+        private string _logTexto = "--- AGUARDANDO CONEXÃO ---\n";
+        public string LogTexto
+        {
+            get => _logTexto;
+            set
+            {
+                _logTexto = value;
+                OnPropertyChanged(nameof(LogTexto));
+            }
+        }
+
+        private ObservableCollection<PortaInfo> _portasDisponiveis = new();
+        public ObservableCollection<PortaInfo> PortasDisponiveis
+        {
+            get => _portasDisponiveis;
+            set
+            {
+                _portasDisponiveis = value;
+                OnPropertyChanged(nameof(PortasDisponiveis));
+            }
+        }
+
+        private PortaInfo? _portaSelecionada;
         public PortaInfo? PortaSelecionada
         {
             get => _portaSelecionada;
             set
             {
-                if (SetProperty(ref _portaSelecionada, value))
-                {
-                    ((RelayCommand)ConectarCommand).RaiseCanExecuteChanged();
-                }
+                _portaSelecionada = value;
+                OnPropertyChanged(nameof(PortaSelecionada));
             }
         }
 
@@ -62,8 +78,10 @@ namespace IndustrialMonitor.ViewModels
         public MainViewModel()
         {
             _serialService = new SerialService();
+
             _serialService.TemperaturaRecebida += OnTemperaturaRecebida;
             _serialService.StatusConexaoAlterado += OnStatusConexaoAlterado;
+            _serialService.LogGerado += OnLogGerado;
 
             ConectarCommand = new RelayCommand(_ => Conectar(), _ => !IsConectado && PortaSelecionada != null && !string.IsNullOrEmpty(PortaSelecionada.NomePorta));
             DesconectarCommand = new RelayCommand(_ => Desconectar(), _ => IsConectado);
@@ -72,28 +90,45 @@ namespace IndustrialMonitor.ViewModels
             CarregarPortas();
         }
 
+        private void OnLogGerado(string mensagem)
+        {
+            Application.Current?.Dispatcher.Invoke(() =>
+            {
+                string hora = DateTime.Now.ToString("HH:mm:ss");
+                LogTexto += $"[{hora}] {mensagem}\n";
+            });
+        }
+
+        private void OnTemperaturaRecebida(double temperatura)
+        {
+            Application.Current?.Dispatcher.Invoke(() =>
+            {
+                Temperatura = temperatura;
+            });
+        }
+
+        private void OnStatusConexaoAlterado(bool conectado)
+        {
+            Application.Current?.Dispatcher.Invoke(() =>
+            {
+                IsConectado = conectado;
+            });
+        }
+
         private void CarregarPortas()
         {
-            PortasDisponiveis.Clear();
             var portas = _serialService.ObterPortasDisponiveis();
+            PortasDisponiveis.Clear();
 
             foreach (var porta in portas)
             {
                 PortasDisponiveis.Add(porta);
             }
 
-            var portaEsp32 = PortasDisponiveis.FirstOrDefault(p => p.IsEsp32);
-            if (portaEsp32 != null)
-            {
-                PortaSelecionada = portaEsp32;
-            }
-            else if (PortasDisponiveis.Count > 0)
-            {
-                PortaSelecionada = PortasDisponiveis[0];
-            }
+            PortaSelecionada = PortasDisponiveis.FirstOrDefault(p => p.IsEsp32) ?? PortasDisponiveis.FirstOrDefault();
         }
 
-            private void Conectar()
+        private void Conectar()
         {
             if (PortaSelecionada != null && !string.IsNullOrEmpty(PortaSelecionada.NomePorta))
             {
@@ -104,28 +139,10 @@ namespace IndustrialMonitor.ViewModels
                 }
             }
         }
+
         private void Desconectar()
         {
             _serialService.Disconectar();
-        }
-
-        private void OnTemperaturaRecebida(double temp)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                TemperaturaAtual = temp;
-            });
-        }
-
-        private void OnStatusConexaoAlterado(bool conectado)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                IsConectado = conectado;
-                StatusTexto = conectado 
-                    ? $"🟢 ESP32 conectado ({PortaSelecionada?.NomeExibicao})" 
-                    : "🔴 ESP32 desconectado";
-            });
         }
     }
 }

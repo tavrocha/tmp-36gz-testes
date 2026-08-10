@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
-using System.Management;
-using System.Runtime.CompilerServices;
+using Microsoft.Win32;
 using IndustrialMonitor.Models;
 
 namespace IndustrialMonitor.Services
@@ -22,7 +21,17 @@ namespace IndustrialMonitor.Services
         public List<PortaInfo> ObterPortasDisponiveis()
         {
             var listaPortas = new List<PortaInfo>();
-            string[] portasSistema = SerialPort.GetPortNames().Distinct().ToArray();
+            string[] portasSistema = Array.Empty<string>();
+
+            // 1. Obtém as portas COM direto do sistema (HARDWARE\DEVICEMAP\SERIALCOMM)
+            try
+            {
+                portasSistema = SerialPort.GetPortNames().Distinct().ToArray();
+            }
+            catch (Exception ex)
+            {
+                LogGerado?.Invoke($"[ERRO SISTEMA]: Falha ao listar portas seriais: {ex.Message}");
+            }
 
             if (portasSistema.Length == 0)
             {
@@ -35,22 +44,14 @@ namespace IndustrialMonitor.Services
                 return listaPortas;
             }
 
-            // Tenta obter os nomes amigáveis via WMI
-            Dictionary<string, string> dispositivosWmi = new();
-            try
-            {
-                dispositivosWmi = ObterDispositivosComWmiIsolado();
-            }
-            catch (Exception ex)
-            {
-                LogGerado?.Invoke($"[AVISO WMI]: Falha ao identificar nomes de dispositivos: {ex.Message}");
-            }
+            // 2. Tenta buscar descrições amigáveis sem derrubar a listagem se o registro for bloqueado
+            var descricoesDispositivos = ObterDescricoesPortasRegistro();
 
             foreach (var porta in portasSistema)
             {
                 bool isEsp32 = false;
 
-                if (dispositivosWmi.TryGetValue(porta, out string? descricao))
+                if (descricoesDispositivos.TryGetValue(porta, out string? descricao))
                 {
                     isEsp32 = ContemChipEsp32(descricao);
                 }
@@ -68,35 +69,64 @@ namespace IndustrialMonitor.Services
             return listaPortas;
         }
 
-        // Método isolado do JIT para evitar exceção de montagem caso System.Management não carregue
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private Dictionary<string, string> ObterDispositivosComWmiIsolado()
+        private Dictionary<string, string> ObterDescricoesPortasRegistro()
         {
             var dicionario = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-            using var searcher = new ManagementObjectSearcher("SELECT Caption, PNPDeviceID, Description FROM Win32_PnPEntity WHERE Caption LIKE '%(COM%'");
-            using var collection = searcher.Get();
-
-            foreach (var obj in collection)
+            try
             {
-                string caption = obj["Caption"]?.ToString() ?? "";
-                string pnpId = obj["PNPDeviceID"]?.ToString() ?? "";
-                string description = obj["Description"]?.ToString() ?? "";
-                string infoCompleta = $"{caption} {pnpId} {description}";
+                using var chaveEnum = OpenSubKeySeguro(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Enum");
+                if (chaveEnum == null) return dicionario;
 
-                int inicio = caption.IndexOf("(COM", StringComparison.OrdinalIgnoreCase);
-                if (inicio != -1)
+                foreach (var busName in GetSubKeyNamesSeguro(chaveEnum))
                 {
-                    int fim = caption.IndexOf(")", inicio);
-                    if (fim != -1)
+                    using var chaveBus = OpenSubKeySeguro(chaveEnum, busName);
+                    if (chaveBus == null) continue;
+
+                    foreach (var devName in GetSubKeyNamesSeguro(chaveBus))
                     {
-                        string porta = caption.Substring(inicio + 1, fim - inicio - 1);
-                        dicionario[porta] = infoCompleta;
+                        using var chaveDev = OpenSubKeySeguro(chaveBus, devName);
+                        if (chaveDev == null) continue;
+
+                        foreach (var instName in GetSubKeyNamesSeguro(chaveDev))
+                        {
+                            using var chaveInst = OpenSubKeySeguro(chaveDev, instName);
+                            if (chaveInst == null) continue;
+
+                            using var chaveParam = OpenSubKeySeguro(chaveInst, "Device Parameters");
+                            if (chaveParam != null)
+                            {
+                                string? portName = chaveParam.GetValue("PortName")?.ToString();
+                                if (!string.IsNullOrEmpty(portName) && portName.StartsWith("COM", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    string friendlyName = chaveInst.GetValue("FriendlyName")?.ToString() ?? "";
+                                    string deviceDesc = chaveInst.GetValue("DeviceDesc")?.ToString() ?? "";
+                                    dicionario[portName] = $"{friendlyName} {deviceDesc}";
+                                }
+                            }
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                LogGerado?.Invoke($"[AVISO REGISTRO]: {ex.Message}");
+            }
 
             return dicionario;
+        }
+
+        // Métodos de segurança para ignorar subchaves sem permissão de leitura de Administrador
+        private string[] GetSubKeyNamesSeguro(RegistryKey key)
+        {
+            try { return key.GetSubKeyNames(); }
+            catch { return Array.Empty<string>(); }
+        }
+
+        private RegistryKey? OpenSubKeySeguro(RegistryKey key, string subKeyName)
+        {
+            try { return key.OpenSubKey(subKeyName); }
+            catch { return null; }
         }
 
         private bool ContemChipEsp32(string descricao)
@@ -111,10 +141,7 @@ namespace IndustrialMonitor.Services
                    descUpper.Contains("FT232") ||
                    descUpper.Contains("ESPRESSIF") ||
                    descUpper.Contains("ESP32") ||
-                   descUpper.Contains("VID_10C4") ||
-                   descUpper.Contains("VID_1A86") ||
-                   descUpper.Contains("VID_303A") ||
-                   descUpper.Contains("VID_0403");
+                   descUpper.Contains("SERIAL");
         }
 
         public (bool Sucesso, string Mensagem) Conectar(string porta, int baudRate = 115200)

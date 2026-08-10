@@ -1,4 +1,5 @@
 using System.Windows;
+using IndustrialMonitor.ViewModels;
 
 namespace IndustrialMonitor.Views
 {
@@ -7,6 +8,7 @@ namespace IndustrialMonitor.Views
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
     }
 }

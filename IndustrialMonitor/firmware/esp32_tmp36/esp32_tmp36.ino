@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-const int pinSensor = 34; // Conecte a saída do TMP36 neste pino (ADC)
+const int pinSensor = 32; // Conecte a saída do TMP36 neste pino (ADC)
 
 void setup() {
   Serial.begin(115200);

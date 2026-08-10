@@ -115,17 +115,24 @@ namespace IndustrialMonitor.ViewModels
             });
         }
 
-        private void CarregarPortas()
+                private void CarregarPortas()
         {
-            var portas = _serialService.ObterPortasDisponiveis();
-            PortasDisponiveis.Clear();
-
-            foreach (var porta in portas)
+            try
             {
-                PortasDisponiveis.Add(porta);
-            }
+                var portas = _serialService.ObterPortasDisponiveis();
+                PortasDisponiveis.Clear();
 
-            PortaSelecionada = PortasDisponiveis.FirstOrDefault(p => p.IsEsp32) ?? PortasDisponiveis.FirstOrDefault();
+                foreach (var porta in portas)
+                {
+                    PortasDisponiveis.Add(porta);
+                }
+
+                PortaSelecionada = PortasDisponiveis.FirstOrDefault(p => p.IsEsp32) ?? PortasDisponiveis.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                LogTexto += $"[{DateTime.Now:HH:mm:ss}] [ERRO CARREGAR PORTAS]: {ex.Message}\n";
+            }
         }
 
         private void Conectar()

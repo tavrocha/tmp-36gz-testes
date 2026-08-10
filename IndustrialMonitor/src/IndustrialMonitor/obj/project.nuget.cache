@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "sdsq7SgfUis=",
+  "dgSpecHash": "nGuF/CJlhtA=",
   "success": true,
   "projectFilePath": "C:\\Users\\User\\tmp-36gz-testes\\IndustrialMonitor\\src\\IndustrialMonitor\\IndustrialMonitor.csproj",
   "expectedPackageFiles": [
@@ -10,9 +10,7 @@
     "C:\\Users\\User\\AppData\\Local\\Temp\\nuget_cache\\runtime.native.system.io.ports\\8.0.0\\runtime.native.system.io.ports.8.0.0.nupkg.sha512",
     "C:\\Users\\User\\AppData\\Local\\Temp\\nuget_cache\\runtime.osx-arm64.runtime.native.system.io.ports\\8.0.0\\runtime.osx-arm64.runtime.native.system.io.ports.8.0.0.nupkg.sha512",
     "C:\\Users\\User\\AppData\\Local\\Temp\\nuget_cache\\runtime.osx-x64.runtime.native.system.io.ports\\8.0.0\\runtime.osx-x64.runtime.native.system.io.ports.8.0.0.nupkg.sha512",
-    "C:\\Users\\User\\AppData\\Local\\Temp\\nuget_cache\\system.codedom\\8.0.0\\system.codedom.8.0.0.nupkg.sha512",
     "C:\\Users\\User\\AppData\\Local\\Temp\\nuget_cache\\system.io.ports\\8.0.0\\system.io.ports.8.0.0.nupkg.sha512",
-    "C:\\Users\\User\\AppData\\Local\\Temp\\nuget_cache\\system.management\\8.0.0\\system.management.8.0.0.nupkg.sha512",
     "C:\\Users\\User\\AppData\\Local\\Temp\\nuget_cache\\microsoft.netcore.app.ref\\8.0.28\\microsoft.netcore.app.ref.8.0.28.nupkg.sha512",
     "C:\\Users\\User\\AppData\\Local\\Temp\\nuget_cache\\microsoft.windowsdesktop.app.ref\\8.0.28\\microsoft.windowsdesktop.app.ref.8.0.28.nupkg.sha512",
     "C:\\Users\\User\\AppData\\Local\\Temp\\nuget_cache\\microsoft.aspnetcore.app.ref\\8.0.28\\microsoft.aspnetcore.app.ref.8.0.28.nupkg.sha512",

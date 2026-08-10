@@ -1,0 +1,7 @@
+# Pastas de compilação temporária do .NET
+**/bin/
+**/obj/
+
+# Configurações do VS Code
+.vscode/*
+!.vscode/c_cpp_properties.json

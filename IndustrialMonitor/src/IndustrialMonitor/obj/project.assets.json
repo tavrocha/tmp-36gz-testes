@@ -337,7 +337,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {},
+    "C:\\Users\\User\\AppData\\Local\\Temp\\nuget_cache": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
@@ -346,7 +346,7 @@
       "projectUniqueName": "C:\\Users\\User\\tmp-36gz-testes\\IndustrialMonitor\\src\\IndustrialMonitor\\IndustrialMonitor.csproj",
       "projectName": "IndustrialMonitor",
       "projectPath": "C:\\Users\\User\\tmp-36gz-testes\\IndustrialMonitor\\src\\IndustrialMonitor\\IndustrialMonitor.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\User\\AppData\\Local\\Temp\\nuget_cache",
       "outputPath": "C:\\Users\\User\\tmp-36gz-testes\\IndustrialMonitor\\src\\IndustrialMonitor\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [

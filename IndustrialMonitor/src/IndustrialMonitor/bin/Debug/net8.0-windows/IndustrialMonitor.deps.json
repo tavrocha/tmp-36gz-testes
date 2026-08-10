@@ -9,7 +9,7 @@
       "IndustrialMonitor/1.0.0": {
         "dependencies": {
           "System.IO.Ports": "8.0.0",
-          "System.Management": "10.0.10"
+          "System.Management": "8.0.0"
         },
         "runtime": {
           "IndustrialMonitor.dll": {}
@@ -69,14 +69,6 @@
           }
         }
       },
-      "System.CodeDom/10.0.10": {
-        "runtime": {
-          "lib/net8.0/System.CodeDom.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.1026.32716"
-          }
-        }
-      },
       "System.IO.Ports/8.0.0": {
         "dependencies": {
           "runtime.native.System.IO.Ports": "8.0.0"
@@ -102,22 +94,19 @@
           }
         }
       },
-      "System.Management/10.0.10": {
-        "dependencies": {
-          "System.CodeDom": "10.0.10"
-        },
+      "System.Management/8.0.0": {
         "runtime": {
           "lib/net8.0/System.Management.dll": {
-            "assemblyVersion": "10.0.0.10",
-            "fileVersion": "10.0.1026.32716"
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
           }
         },
         "runtimeTargets": {
           "runtimes/win/lib/net8.0/System.Management.dll": {
             "rid": "win",
             "assetType": "runtime",
-            "assemblyVersion": "10.0.0.10",
-            "fileVersion": "10.0.1026.32716"
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
           }
         }
       }
@@ -171,13 +160,6 @@
       "path": "runtime.osx-x64.runtime.native.system.io.ports/8.0.0",
       "hashPath": "runtime.osx-x64.runtime.native.system.io.ports.8.0.0.nupkg.sha512"
     },
-    "System.CodeDom/10.0.10": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-lru5igKxs4OgWKfMeOpMAYpfB1tNSSXHk2zyiSDO/h0u8RVAhN6KqW9d3ANybDB+ePIHg6HM/NlE8HlpOk4k5A==",
-      "path": "system.codedom/10.0.10",
-      "hashPath": "system.codedom.10.0.10.nupkg.sha512"
-    },
     "System.IO.Ports/8.0.0": {
       "type": "package",
       "serviceable": true,
@@ -185,12 +167,12 @@
       "path": "system.io.ports/8.0.0",
       "hashPath": "system.io.ports.8.0.0.nupkg.sha512"
     },
-    "System.Management/10.0.10": {
+    "System.Management/8.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-U13ksdXfQlF2WDdu3S4ZPVpikFs2HgV3dbJJZLeZpBIQ4z/xCmQnwEf6LsEEIC2zSamVVa1acA9RdVhZwnWKeA==",
-      "path": "system.management/10.0.10",
-      "hashPath": "system.management.10.0.10.nupkg.sha512"
+      "sha512": "sha512-jrK22i5LRzxZCfGb+tGmke2VH7oE0DvcDlJ1HAKYU8cPmD8XnpUT0bYn2Gy98GEhGjtfbR/sxKTVb+dE770pfA==",
+      "path": "system.management/8.0.0",
+      "hashPath": "system.management.8.0.0.nupkg.sha512"
     }
   }
 }

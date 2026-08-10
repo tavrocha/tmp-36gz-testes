@@ -44,7 +44,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <ComboBox Grid.Column="0" ItemsSource="{Binding PortasDisponiveis}" SelectedItem="{Binding PortaSelecionada}" Margin="0,0,10,0"/>
+                    <ComboBox Grid.Column="0" ItemsSource="{Binding PortasDisponiveis}" SelectedItem="{Binding PortaSelecionada}" DisplayMemberPath="NomeExibicao" Margin="0,0,10,0"/>
                     <Button Grid.Column="1" Content="↺" Command="{Binding AtualizarPortasCommand}" Width="30"/>
                 </Grid>
             </StackPanel>

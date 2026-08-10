@@ -1,7 +1,9 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using IndustrialMonitor.Models;
 using IndustrialMonitor.Services;
 
 namespace IndustrialMonitor.ViewModels
@@ -12,9 +14,9 @@ namespace IndustrialMonitor.ViewModels
         private double _temperaturaAtual;
         private string _statusTexto = "🔴 ESP32 desconectado";
         private bool _isConectado;
-        private string? _portaSelecionada;
+        private PortaInfo? _portaSelecionada;
 
-        public ObservableCollection<string> PortasDisponiveis { get; } = new();
+        public ObservableCollection<PortaInfo> PortasDisponiveis { get; } = new();
 
         public double TemperaturaAtual
         {
@@ -41,7 +43,7 @@ namespace IndustrialMonitor.ViewModels
             }
         }
 
-        public string? PortaSelecionada
+        public PortaInfo? PortaSelecionada
         {
             get => _portaSelecionada;
             set
@@ -63,7 +65,7 @@ namespace IndustrialMonitor.ViewModels
             _serialService.TemperaturaRecebida += OnTemperaturaRecebida;
             _serialService.StatusConexaoAlterado += OnStatusConexaoAlterado;
 
-            ConectarCommand = new RelayCommand(_ => Conectar(), _ => !IsConectado && !string.IsNullOrEmpty(PortaSelecionada));
+            ConectarCommand = new RelayCommand(_ => Conectar(), _ => !IsConectado && PortaSelecionada != null && !string.IsNullOrEmpty(PortaSelecionada.NomePorta));
             DesconectarCommand = new RelayCommand(_ => Desconectar(), _ => IsConectado);
             AtualizarPortasCommand = new RelayCommand(_ => CarregarPortas());
 
@@ -74,12 +76,18 @@ namespace IndustrialMonitor.ViewModels
         {
             PortasDisponiveis.Clear();
             var portas = _serialService.ObterPortasDisponiveis();
+
             foreach (var porta in portas)
             {
                 PortasDisponiveis.Add(porta);
             }
 
-            if (PortasDisponiveis.Count > 0)
+            var portaEsp32 = PortasDisponiveis.FirstOrDefault(p => p.IsEsp32);
+            if (portaEsp32 != null)
+            {
+                PortaSelecionada = portaEsp32;
+            }
+            else if (PortasDisponiveis.Count > 0)
             {
                 PortaSelecionada = PortasDisponiveis[0];
             }
@@ -87,9 +95,9 @@ namespace IndustrialMonitor.ViewModels
 
         private void Conectar()
         {
-            if (PortaSelecionada != null)
+            if (PortaSelecionada != null && !string.IsNullOrEmpty(PortaSelecionada.NomePorta))
             {
-                _serialService.Conectar(PortaSelecionada);
+                _serialService.Conectar(PortaSelecionada.NomePorta);
             }
         }
 
@@ -106,14 +114,13 @@ namespace IndustrialMonitor.ViewModels
             });
         }
 
-
         private void OnStatusConexaoAlterado(bool conectado)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
                 IsConectado = conectado;
                 StatusTexto = conectado 
-                    ? $"🟢 ESP32 conectado ({PortaSelecionada})" 
+                    ? $"🟢 ESP32 conectado ({PortaSelecionada?.NomeExibicao})" 
                     : "🔴 ESP32 desconectado";
             });
         }

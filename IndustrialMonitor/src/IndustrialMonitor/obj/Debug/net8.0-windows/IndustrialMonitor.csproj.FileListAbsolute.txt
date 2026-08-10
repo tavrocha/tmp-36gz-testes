@@ -4,6 +4,7 @@ C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\IndustrialMonitor.dll
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\IndustrialMonitor.pdb
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\System.IO.Ports.dll
+C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\System.Management.dll
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\runtimes\linux-arm\native\libSystem.IO.Ports.Native.so
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\runtimes\linux-arm64\native\libSystem.IO.Ports.Native.so
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\runtimes\linux-x64\native\libSystem.IO.Ports.Native.so
@@ -11,6 +12,7 @@ C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\runtimes\osx-x64\native\libSystem.IO.Ports.Native.dylib
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\runtimes\unix\lib\net8.0\System.IO.Ports.dll
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.IO.Ports.dll
+C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\IndustrialMonitor.csproj.AssemblyReference.cache
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\Views\MainWindow.g.cs
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\App.g.cs
@@ -30,6 +32,3 @@ C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\IndustrialMonitor.pdb
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\IndustrialMonitor.genruntimeconfig.cache
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\ref\IndustrialMonitor.dll
-C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\System.CodeDom.dll
-C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\System.Management.dll
-C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll

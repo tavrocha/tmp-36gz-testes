@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Management;
+using IndustrialMonitor.Models;
 
 namespace IndustrialMonitor.Services
 {
@@ -13,13 +16,105 @@ namespace IndustrialMonitor.Services
 
         public bool IsConectado => _serialPort?.IsOpen ?? false;
 
-        public string[] ObterPortasDisponiveis()
+        public List<PortaInfo> ObterPortasDisponiveis()
         {
-            return SerialPort.GetPortNames().Distinct().ToArray();
+            var listaPortas = new List<PortaInfo>();
+            string[] portasSistema = SerialPort.GetPortNames().Distinct().ToArray();
+
+            // Se não houver nenhuma porta serial física/virtual conectada no PC
+            if (portasSistema.Length == 0)
+            {
+                listaPortas.Add(new PortaInfo
+                {
+                    NomePorta = string.Empty,
+                    NomeExibicao = "Porta vazia",
+                    IsEsp32 = false
+                });
+                return listaPortas;
+            }
+
+            var dispositivosWmi = ObterDispositivosComWmi();
+
+            foreach (var porta in portasSistema)
+            {
+                bool isEsp32 = false;
+
+                if (dispositivosWmi.TryGetValue(porta, out string? descricao))
+                {
+                    isEsp32 = ContemChipEsp32(descricao);
+                }
+
+                string exibicao = isEsp32 ? $"{porta} - ESP-32" : porta;
+
+                listaPortas.Add(new PortaInfo
+                {
+                    NomePorta = porta,
+                    NomeExibicao = exibicao,
+                    IsEsp32 = isEsp32
+                });
+            }
+
+            return listaPortas;
+        }
+
+        private Dictionary<string, string> ObterDispositivosComWmi()
+        {
+            var dicionario = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            try
+            {
+                using var searcher = new ManagementObjectSearcher("SELECT Caption, PNPDeviceID, Description FROM Win32_PnPEntity WHERE Caption LIKE '%(COM%'");
+                using var collection = searcher.Get();
+
+                foreach (var obj in collection)
+                {
+                    string caption = obj["Caption"]?.ToString() ?? "";
+                    string pnpId = obj["PNPDeviceID"]?.ToString() ?? "";
+                    string description = obj["Description"]?.ToString() ?? "";
+                    string infoCompleta = $"{caption} {pnpId} {description}";
+
+                    int inicio = caption.IndexOf("(COM", StringComparison.OrdinalIgnoreCase);
+                    if (inicio != -1)
+                    {
+                        int fim = caption.IndexOf(")", inicio);
+                        if (fim != -1)
+                        {
+                            string porta = caption.Substring(inicio + 1, fim - inicio - 1);
+                            dicionario[porta] = infoCompleta;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Ignora exceções e permite execução degradada
+            }
+
+            return dicionario;
+        }
+
+        private bool ContemChipEsp32(string descricao)
+        {
+            if (string.IsNullOrEmpty(descricao)) return false;
+
+            string descUpper = descricao.ToUpper();
+
+            // Identificadores de Hardware (VID/PID) e Nomes de Controladores USB-Serial comuns em ESP32
+            return descUpper.Contains("CP210") ||     // CP2102 / CP2104 (Silicon Labs)
+                   descUpper.Contains("CH340") ||     // CH340G / CH340C (WCH)
+                   descUpper.Contains("CH341") ||
+                   descUpper.Contains("FT232") ||     // FTDI
+                   descUpper.Contains("ESPRESSIF") || // USB CDC Nativo do ESP32
+                   descUpper.Contains("ESP32") ||
+                   descUpper.Contains("VID_10C4") || // Silicon Labs VID
+                   descUpper.Contains("VID_1A86") || // WCH VID
+                   descUpper.Contains("VID_303A") || // Espressif VID
+                   descUpper.Contains("VID_0403");   // FTDI VID
         }
 
         public bool Conectar(string porta, int baudRate = 115200)
         {
+            if (string.IsNullOrEmpty(porta)) return false;
             if (IsConectado) Disconectar();
 
             try
@@ -32,7 +127,7 @@ namespace IndustrialMonitor.Services
 
                 _serialPort.DataReceived += SerialPort_DataReceived;
                 _serialPort.Open();
-                
+
                 StatusConexaoAlterado?.Invoke(true);
                 return true;
             }
@@ -77,7 +172,7 @@ namespace IndustrialMonitor.Services
             }
             catch
             {
-                // Erros de leitura parcial de linha ignorados para evitar falha no thread
+                // Erros de leitura parcial de linha ignorados
             }
         }
     }

@@ -30,3 +30,6 @@ C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\IndustrialMonitor.pdb
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\IndustrialMonitor.genruntimeconfig.cache
 C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\obj\Debug\net8.0-windows\ref\IndustrialMonitor.dll
+C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\System.CodeDom.dll
+C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\System.Management.dll
+C:\Users\User\tmp-36gz-testes\IndustrialMonitor\src\IndustrialMonitor\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll

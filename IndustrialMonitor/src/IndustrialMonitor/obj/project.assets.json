@@ -57,6 +57,22 @@
           }
         }
       },
+      "System.CodeDom/10.0.10": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/System.CodeDom.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/System.CodeDom.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
+        }
+      },
       "System.IO.Ports/8.0.0": {
         "type": "package",
         "dependencies": {
@@ -81,6 +97,31 @@
             "rid": "unix"
           },
           "runtimes/win/lib/net8.0/System.IO.Ports.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
+      "System.Management/10.0.10": {
+        "type": "package",
+        "dependencies": {
+          "System.CodeDom": "10.0.10"
+        },
+        "compile": {
+          "lib/net8.0/System.Management.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/System.Management.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net8.0/System.Management.dll": {
             "assetType": "runtime",
             "rid": "win"
           }
@@ -184,6 +225,35 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "System.CodeDom/10.0.10": {
+      "sha512": "lru5igKxs4OgWKfMeOpMAYpfB1tNSSXHk2zyiSDO/h0u8RVAhN6KqW9d3ANybDB+ePIHg6HM/NlE8HlpOk4k5A==",
+      "type": "package",
+      "path": "system.codedom/10.0.10",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/System.CodeDom.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net8.0/_._",
+        "buildTransitive/netcoreapp2.0/System.CodeDom.targets",
+        "lib/net10.0/System.CodeDom.dll",
+        "lib/net10.0/System.CodeDom.xml",
+        "lib/net462/System.CodeDom.dll",
+        "lib/net462/System.CodeDom.xml",
+        "lib/net8.0/System.CodeDom.dll",
+        "lib/net8.0/System.CodeDom.xml",
+        "lib/net9.0/System.CodeDom.dll",
+        "lib/net9.0/System.CodeDom.xml",
+        "lib/netstandard2.0/System.CodeDom.dll",
+        "lib/netstandard2.0/System.CodeDom.xml",
+        "system.codedom.10.0.10.nupkg.sha512",
+        "system.codedom.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
     "System.IO.Ports/8.0.0": {
       "sha512": "MaiPbx2/QXZc62gm/DrajRrGPG1lU4m08GWMoWiymPYM+ba4kfACp2PbiYpqJ4QiFGhHD00zX3RoVDTucjWe9g==",
       "type": "package",
@@ -225,11 +295,44 @@
         "system.io.ports.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "System.Management/10.0.10": {
+      "sha512": "U13ksdXfQlF2WDdu3S4ZPVpikFs2HgV3dbJJZLeZpBIQ4z/xCmQnwEf6LsEEIC2zSamVVa1acA9RdVhZwnWKeA==",
+      "type": "package",
+      "path": "system.management/10.0.10",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net8.0/_._",
+        "buildTransitive/netcoreapp2.0/System.Management.targets",
+        "lib/net10.0/System.Management.dll",
+        "lib/net10.0/System.Management.xml",
+        "lib/net462/_._",
+        "lib/net8.0/System.Management.dll",
+        "lib/net8.0/System.Management.xml",
+        "lib/net9.0/System.Management.dll",
+        "lib/net9.0/System.Management.xml",
+        "lib/netstandard2.0/System.Management.dll",
+        "lib/netstandard2.0/System.Management.xml",
+        "runtimes/win/lib/net10.0/System.Management.dll",
+        "runtimes/win/lib/net10.0/System.Management.xml",
+        "runtimes/win/lib/net8.0/System.Management.dll",
+        "runtimes/win/lib/net8.0/System.Management.xml",
+        "runtimes/win/lib/net9.0/System.Management.dll",
+        "runtimes/win/lib/net9.0/System.Management.xml",
+        "system.management.10.0.10.nupkg.sha512",
+        "system.management.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net8.0-windows": [
-      "System.IO.Ports >= 8.0.0"
+      "System.IO.Ports >= 8.0.0",
+      "System.Management >= 10.0.10"
     ]
   },
   "packageFolders": {
@@ -239,9 +342,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\tmp-36gz-testes\\IndustrialMonitor\\src\\IndustrialMonitor\\IndustrialMonitor.csproj",
+      "projectUniqueName": "c:\\Users\\User\\tmp-36gz-testes\\IndustrialMonitor\\src\\IndustrialMonitor\\IndustrialMonitor_whaa1jxw_wpftmp.csproj",
       "projectName": "IndustrialMonitor",
-      "projectPath": "C:\\Users\\User\\tmp-36gz-testes\\IndustrialMonitor\\src\\IndustrialMonitor\\IndustrialMonitor.csproj",
+      "projectPath": "c:\\Users\\User\\tmp-36gz-testes\\IndustrialMonitor\\src\\IndustrialMonitor\\IndustrialMonitor_whaa1jxw_wpftmp.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\User\\tmp-36gz-testes\\IndustrialMonitor\\src\\IndustrialMonitor\\obj\\",
       "projectStyle": "PackageReference",
@@ -287,6 +390,10 @@
           "System.IO.Ports": {
             "target": "Package",
             "version": "[8.0.0, )"
+          },
+          "System.Management": {
+            "target": "Package",
+            "version": "[10.0.10, )"
           }
         },
         "imports": [

@@ -93,14 +93,17 @@ namespace IndustrialMonitor.ViewModels
             }
         }
 
-        private void Conectar()
+            private void Conectar()
         {
             if (PortaSelecionada != null && !string.IsNullOrEmpty(PortaSelecionada.NomePorta))
             {
-                _serialService.Conectar(PortaSelecionada.NomePorta);
+                var (sucesso, mensagem) = _serialService.Conectar(PortaSelecionada.NomePorta);
+                if (!sucesso)
+                {
+                    MessageBox.Show(mensagem, "Aviso de Conexão", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
-
         private void Desconectar()
         {
             _serialService.Disconectar();

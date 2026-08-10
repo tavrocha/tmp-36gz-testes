@@ -112,9 +112,11 @@ namespace IndustrialMonitor.Services
                    descUpper.Contains("VID_0403");   // FTDI VID
         }
 
-        public bool Conectar(string porta, int baudRate = 115200)
+                public (bool Sucesso, string Mensagem) Conectar(string porta, int baudRate = 115200)
         {
-            if (string.IsNullOrEmpty(porta)) return false;
+            if (string.IsNullOrEmpty(porta)) 
+                return (false, "Nenhuma porta válida selecionada.");
+
             if (IsConectado) Disconectar();
 
             try
@@ -129,12 +131,17 @@ namespace IndustrialMonitor.Services
                 _serialPort.Open();
 
                 StatusConexaoAlterado?.Invoke(true);
-                return true;
+                return (true, "Conectado com sucesso.");
             }
-            catch
+            catch (UnauthorizedAccessException)
             {
                 StatusConexaoAlterado?.Invoke(false);
-                return false;
+                return (false, $"A porta {porta} está em uso por outro programa (ex: Monitor Serial da IDE do Arduino).\nFeche-o e tente novamente.");
+            }
+            catch (Exception ex)
+            {
+                StatusConexaoAlterado?.Invoke(false);
+                return (false, $"Erro ao abrir a porta {porta}: {ex.Message}");
             }
         }
 

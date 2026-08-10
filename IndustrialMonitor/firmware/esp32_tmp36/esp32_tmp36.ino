@@ -1,31 +1,24 @@
 #include <Arduino.h>
 
-const int PINO_TMP36 = 32;
-unsigned long ultimaLeitura = 0;
-const unsigned long INTERVALO_LEITURA = 200; // ms
-
-float lerTemperaturaTMP36(int pino) {
-    int leituraADC = analogRead(pino);
-    float tensao = leituraADC * (3.3f / 4095.0f);
-    float temperatura = (tensao - 0.5f) * 100.0f;
-    return temperatura;
-}
+const int pinSensor = 34; // Conecte a saída do TMP36 neste pino (ADC)
 
 void setup() {
-    Serial.begin(115200);
-    analogReadResolution(12);
-    pinMode(PINO_TMP36, INPUT);
+  Serial.begin(115200);
+  analogReadResolution(12); // Resolução de 12 bits do ESP32 (0-4095)
 }
 
 void loop() {
-    unsigned long tempoAtual = millis();
-    
-    if (tempoAtual - ultimaLeitura >= INTERVALO_LEITURA) {
-        ultimaLeitura = tempoAtual;
-        
-        float tempC = lerTemperaturaTMP36(PINO_TMP36);
-        
-        Serial.print("TEMP=");
-        Serial.println(tempC, 2);
-    }
+  int valorAnalogico = analogRead(pinSensor);
+  
+  // Converte a leitura analógica para milivolt (assumindo 3.3V)
+  float voltagem = valorAnalogico * (3.3 / 4095.0);
+  
+  // Converte a voltagem para temperatura (°C) do TMP36
+  float temperatura = (voltagem - 0.5) * 100.0;
+
+  // Envia a temperatura no formato que o C# lê
+  Serial.print("TEMP=");
+  Serial.println(temperatura);
+
+  delay(1000);
 }
